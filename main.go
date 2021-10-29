@@ -21,12 +21,18 @@ var a Quote
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path[1:] != "favicon.ico" && r.URL.Path[1:] != "json" {
-		fmt.Fprintf(w, "Цитата матвея: %s!", r.URL.Path[1:])
+		_, err := fmt.Fprintf(w, "Цитата : %s", r.URL.Path[1:])
+		if err != nil {
+			return
+		}
 		a.Quotes = append(a.Quotes, trans{r.URL.Path[1:], r.URL.Path[1:]})
 		updater(a)
-	} else if r.URL.Path[1:] == "json"{
+	} else if r.URL.Path[1:] == "json" {
 		file, _ := json.MarshalIndent(a, "", " ")
-		fmt.Fprintf(w, "%s", file)
+		_, err := fmt.Fprintf(w, "%s", file)
+		if err != nil {
+			return
+		}
 	}
 
 }
