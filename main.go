@@ -43,6 +43,11 @@ func updater(a Quote) {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+        if port == "" {
+                port = "8080"
+                log.Printf("defaulting to port %s", port)
+        }
 	http.HandleFunc("/", handler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":" + port, nil))
 }
