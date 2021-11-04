@@ -4,61 +4,22 @@
 
 #include <map>
 #include <set>
+#include <vector>
 #include "../include/FixLetter.h"
 #include "../include/LettersDivision.h"
 std::map<std::string, std::set<fixing>> Types;
 /* первый элемент - буква, которую надо исправить
- * в сете хранятся варианты исправления как пара буква-вероятность того, что она подходит
+ * в сете хранятся варианты исправления как пара буква-вероятность того, что она подходит и число случаев, где она подходила,
+ * чтобы пересчитывать вероятность
  */
 double startVal = 0.0;
 int casesViewed = 0;
 void fill() {
-    Types["ы"] = {fixing("й", startVal, casesViewed),
-                  fixing("у", startVal, casesViewed),
-                  fixing("в", startVal, casesViewed),
-                  fixing("ц", startVal, casesViewed),
-                  fixing("ф", startVal, casesViewed),
-                  fixing("я", startVal, casesViewed),
-                  fixing("ч", startVal, casesViewed)};
-
-    Types["п"] = {fixing("к", startVal, casesViewed),
-                  fixing("е", startVal, casesViewed),
-                  fixing("н", startVal, casesViewed),
-                  fixing("р", startVal, casesViewed),
-                  fixing("и", startVal, casesViewed),
-                  fixing("м", startVal, casesViewed),
-                  fixing("с", startVal, casesViewed),
-                  fixing("а", startVal, casesViewed)};
-
-    Types["л"] = {fixing("г", startVal, casesViewed),
-                  fixing("о", startVal, casesViewed),
-                  fixing("т", startVal, casesViewed),
-                  fixing("ь", startVal, casesViewed),
-                  fixing("б", startVal, casesViewed),
-                  fixing("д", startVal, casesViewed),
-                  fixing("щ", startVal, casesViewed),
-                  fixing("ш", startVal, casesViewed)};
-
-    Types["ж"] = {fixing("з", startVal, casesViewed),
-                  fixing("х", startVal, casesViewed),
-                  fixing("э", startVal, casesViewed),
-                  fixing("ю", startVal, casesViewed),
-                  fixing("щ", startVal, casesViewed),
-                  fixing("д", startVal, casesViewed),
-                  fixing("б", startVal, casesViewed)};
-
-    Types[" "] = {fixing("с", startVal, casesViewed),
-                  fixing("м", startVal, casesViewed),
-                  fixing("и", startVal, casesViewed),
-                  fixing("т", startVal, casesViewed),
-                  fixing("ь", startVal, casesViewed)};
-    for (const auto& elem : Types) {
-        for (const auto& next : elem.second) {
-            Types[next.sym].insert(fixing(elem.first, startVal, casesViewed));
-            for (const auto& it : elem.second) {
-                if (it != next) {
-                    Types[next.sym].insert(it);
-                }
+    std::vector <std::string> letters = {"й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", " ", "."};
+    for (int i = 0; i < letters.size(); ++i){
+        for (int j = 0; j < letters.size(); ++j){
+            if (i != j){
+                Types[letters[i]].insert(fixing(letters[j], startVal, casesViewed));
             }
         }
     }
