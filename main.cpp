@@ -4,16 +4,11 @@
 int main() {
     std::setlocale(LC_ALL, "russian");
     fill();
-    for (auto& elem : Types){
-        std::cout << elem.first << " ";
-        for (auto& it : elem.second){
-            std::cout << it.sym << " ";
-        }
-        std::cout << "\n";
-    }
     std::string s;
+    //TODO
     while (getline(std::cin, s)){
-        Mistake tmp("", "");
+        //здесь надо брать данные из жсона
+        Mistake tmp(s, s);
         update(tmp);
     }
     return 0;
